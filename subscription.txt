@@ -1,0 +1,59 @@
+# FastКОЧ ВПН — Германия
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/Germany.json
+
+# FastКОЧ ВПН — Беларусь
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/belarus.json
+
+# FastКОЧ ВПН — Британия
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/britan.json
+
+# FastКОЧ ВПН — Эстония
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/estonia.json
+
+# FastКОЧ ВПН — Франция
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/france.json
+
+# FastКОЧ ВПН — Италия
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/italy.json
+
+# FastКОЧ ВПН — Казахстан
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/kazahstan.json
+
+# FastКОЧ ВПН — Нидерланды
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/nigerlands.json
+
+# FastКОЧ ВПН — Польша
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/poland.json
+
+# FastКОЧ ВПН — Швеция
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/sveden.json
+
+# FastКОЧ ВПН — США
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/usa.json
+
+# FastКОЧ ВПН — Узбекистан
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/uzbek.json
+
+# FastКОЧ ВПН — LTE 1
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte1.json
+
+# FastКОЧ ВПН — LTE 2
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte2.json
+
+# FastКОЧ ВПН — LTE 3
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte3.json
+
+# FastКОЧ ВПН — LTE 4
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte4.json
+
+# FastКОЧ ВПН — LTE 5
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte5.json
+
+# FastКОЧ ВПН — LTE 6
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte6.json
+
+# FastКОЧ ВПН — LTE 7
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte7.json
+
+# FastКОЧ ВПН — LTE 9
+https://raw.githubusercontent.com/semenkir22-stack/fast-/main/lte9.json
