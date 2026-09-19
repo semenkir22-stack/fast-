@@ -17,4 +17,12 @@ https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte4.json
 https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte5.json
 https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte6.json
 https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte7.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte9.jsonttps://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/uzbek.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte1.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte2.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte3.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte4.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte5.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte6.json
+https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte7.json
 https://raw.githubusercontent.com/semenkir22-stack/zalupacohc67/main/lte9.json
