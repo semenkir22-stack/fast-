@@ -1,0 +1,356 @@
+{
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "queryStrategy": "UseIPv4"
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "domain": [
+          "domain:max.ru",
+          "domain:oneme.ru"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "domain:rtk.harknmav.fun",
+          "domain:sub.harknmav.fun",
+          "domain:st.harknmav.ru",
+          "keyword:yandex",
+          "domain:ya.ru",
+          "domain:ya.cc",
+          "keyword:yastat",
+          "keyword:yndx",
+          "keyword:yccdn",
+          "keyword:clck",
+          "keyword:kinopoisk",
+          "domain:mvk.com",
+          "domain:vk.com",
+          "domain:vk.ru",
+          "domain:vk.cc",
+          "domain:vk.link",
+          "domain:vk.me",
+          "keyword:vkontakte",
+          "keyword:userapi",
+          "keyword:cdn-vk",
+          "keyword:vk-cdn",
+          "keyword:vk-portal",
+          "keyword:vkcache",
+          "keyword:vkcdnservice",
+          "keyword:vkuser",
+          "keyword:vkmessenger",
+          "keyword:vk-apps",
+          "keyword:vkvideo",
+          "keyword:vkclips",
+          "keyword:vklive",
+          "keyword:boom",
+          "domain:ok.ru",
+          "domain:ok.me",
+          "domain:okl.lt",
+          "keyword:odnoklassniki",
+          "keyword:odnoklasniki",
+          "keyword:odkl",
+          "domain:okcdn.ru",
+          "keyword:apiok",
+          "keyword:insideok",
+          "keyword:mycdn",
+          "keyword:mrgcdn",
+          "domain:mts.ru",
+          "keyword:mymts",
+          "keyword:mts-ws",
+          "keyword:wildberries",
+          "domain:wb.ru",
+          "keyword:wb-basket",
+          "keyword:wbbasket",
+          "keyword:wbcontent",
+          "keyword:wbstatic",
+          "keyword:wb-sale",
+          "keyword:wbpay",
+          "keyword:paywb",
+          "keyword:ozon",
+          "domain:o3.ru",
+          "keyword:samokat",
+          "keyword:megamarket",
+          "keyword:rustore",
+          "keyword:avito",
+          "keyword:2gis",
+          "keyword:rutube",
+          "keyword:rtbcdn",
+          "keyword:alfa",
+          "domain:vtb.ru",
+          "keyword:vtb-direct",
+          "keyword:vtbglobalperspectives",
+          "keyword:gazprombank",
+          "domain:gpb.ru",
+          "domain:psb.ru",
+          "keyword:psbank",
+          "keyword:psb-ocenka",
+          "keyword:moex",
+          "keyword:finuslugi",
+          "keyword:nspk",
+          "keyword:mironline",
+          "keyword:mir-platform",
+          "keyword:sberdevices",
+          "keyword:zvuk",
+          "keyword:sbermobile",
+          "keyword:sberdisk",
+          "keyword:okko",
+          "keyword:playfamily",
+          "keyword:kuper",
+          "keyword:giga",
+          "domain:mail.ru",
+          "domain:tech-mail.ru",
+          "domain:appsmail.ru",
+          "domain:attachmail.ru",
+          "domain:cdnmail.ru",
+          "domain:imgsmail.ru",
+          "domain:smailru.net",
+          "domain:vmailru.net",
+          "domain:xmail.ru"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "balancerTag": "Super_Balancer"
+      }
+    ],
+    "balancers": [
+      {
+        "tag": "Super_Balancer",
+        "selector": [
+          "proxy"
+        ],
+        "strategy": {
+          "type": "leastLoad",
+          "settings": {
+            "maxRTT": "3000ms",
+            "expected": 2,
+            "tolerance": 0.11
+          }
+        }
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "AsIs"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "tls"
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "tls"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "185.229.9.230",
+            "port": 8002,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "mlkem768x25519plus.native.0rtt.A3UZy5M7a_iTWxyac5U_ohehjeJTJLAsrCRtqwBpQwa41ptIpNVcKjVrWCy6JZiISCvP1gg0Etlr0jSg2Ne3s2pcXZZQhJS7FCQTbesPgTo1DPmhd4cWsvw5oHw8gIl6sPLHDbFW-ZZvbkODBGmbuHNsjwM9_HSgDASX-CljPYPKQyVXXiGctDQexpl6ytKdoLV3bNld8ykrb3E8kelP3ZiAbtsOQ6uF_CQ8fAJh-HifOUVMiJua6oCR7eKNoTxnyNEmNeIxnXpolVOkH0yQxXgnvOG56ikPrDN0S_E9DmQgR9qlIiya5shY1uUzSDGaxMgQOZvDcUBcidgqn4eg7ZHNbgcxmKm_rEVtQzgJ6ASxttYyrLGeciayU1Vmj3yw5YIhsducEXA47gbCqMx9cSQyNYAsQBZe-gR2lUNMsmctVNGHN6a_7VQLdCI67HCpBxkE7tRiskBUpELOr4EPd_uJ_nguWcuMfBeAeZjAj2V9BdRSyupDK_gRVPKD6LgKZfUxXmN_H-wRbcygWYubyXqV7xqrtrFNInW1fSFK3iJ78Yu1lDHFxDVWBzy2XgtoHkVZxXe048k5tgGsc6qD32IUhgGtfGCjwjXAz0Ckd3scgHYWIEZ6NaFdmBckONgEwVxNDTPCZFCm0rG-9LcXFinJamglf4Ifh8e6J6BP4NOdSJN98NUSwiarazBMmZHChvCpP9ekhgll5Hx-Z2wO60oAuqkKu6R6m2k6KWKnetopYuFeYUcX5NpBCeA1GxJdq6WlyrKNW9IPdgC2KrlvpEJShuwzCGN8GcyUeCOwz9pLBBGCMxAryvM496p-aaBCscnKOMJxoVSR-AfByXxMLPyfZDSrc4QKr8paXpq4-qV9o8ymnnmDycg0XHKE7Yq6AtaUQte---Ft1hB-4zfBRseV43JERhiD9axs2kAwPCq_Squ21GJLWfs2fwNhveuWPad0uIIwQzG8YKkM4PIXf7yFXWKaOvqeLhpQqWimzrBC0eTBlEILIIQoZOhXpASZShyqACMgxHOK_OasKiSG51mk_dQLFMejzUJ1HbhGSkRc1qswl6OepZxczCTAUWSnK8V-RdUsz3UhxyCAkBU-YwsWdxBBxZk0YfHF2CQnl6ST_XfJbJbExEqVS8VfXzLHnxTIqwc5ateS-RzEdfSjnxMBQYwgWDCrDxWFX9sDc0xsu9tOC8qBT9Fa6RWKkvUBQvxafhgsAll4U7eQyMtTMRjPqGkb-pWlEoYu1Jy-NmjA_KM42LAl85mLfBChNBgFiPw08HEDPRexJkdKodi2FLu1dfQw1go-9nmS6MR3OlNgr_UMspDDLejHbAmwKratI3LMtWsBMVtq96fKyrIvktamlMyelRamuxIXqoFGrTutXtg0myiKqgzO7lcZ3ku3lLEz0Fp602en3DrD8NioMkekElUowwE4NoREHXEfjrOW_LpYH-FFqGtWVtV1ryC0GMNOBBjOdxlmZRm_1uwCSMq1yoyXfiOSfzURaoWglkspg9BckrHM3smcE0UT7EmMEjneVFO6LyfvfO_XLOBulnozMhlegdWlSwTE4bMhLIA",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "max.ru",
+          "publicKey": "wLB0Aqpcf71_RTk7HpqkyvnnasU18rgzyHqcTxoo7nA",
+          "shortId": "146655b57cc78a17",
+          "fingerprint": "firefox"
+        }
+      }
+    },
+    {
+      "tag": "proxy-2",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "62.152.60.104",
+            "port": 8002,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "mlkem768x25519plus.native.0rtt.A3UZy5M7a_iTWxyac5U_ohehjeJTJLAsrCRtqwBpQwa41ptIpNVcKjVrWCy6JZiISCvP1gg0Etlr0jSg2Ne3s2pcXZZQhJS7FCQTbesPgTo1DPmhd4cWsvw5oHw8gIl6sPLHDbFW-ZZvbkODBGmbuHNsjwM9_HSgDASX-CljPYPKQyVXXiGctDQexpl6ytKdoLV3bNld8ykrb3E8kelP3ZiAbtsOQ6uF_CQ8fAJh-HifOUVMiJua6oCR7eKNoTxnyNEmNeIxnXpolVOkH0yQxXgnvOG56ikPrDN0S_E9DmQgR9qlIiya5shY1uUzSDGaxMgQOZvDcUBcidgqn4eg7ZHNbgcxmKm_rEVtQzgJ6ASxttYyrLGeciayU1Vmj3yw5YIhsducEXA47gbCqMx9cSQyNYAsQBZe-gR2lUNMsmctVNGHN6a_7VQLdCI67HCpBxkE7tRiskBUpELOr4EPd_uJ_nguWcuMfBeAeZjAj2V9BdRSyupDK_gRVPKD6LgKZfUxXmN_H-wRbcygWYubyXqV7xqrtrFNInW1fSFK3iJ78Yu1lDHFxDVWBzy2XgtoHkVZxXe048k5tgGsc6qD32IUhgGtfGCjwjXAz0Ckd3scgHYWIEZ6NaFdmBckONgEwVxNDTPCZFCm0rG-9LcXFinJamglf4Ifh8e6J6BP4NOdSJN98NUSwiarazBMmZHChvCpP9ekhgll5Hx-Z2wO60oAuqkKu6R6m2k6KWKnetopYuFeYUcX5NpBCeA1GxJdq6WlyrKNW9IPdgC2KrlvpEJShuwzCGN8GcyUeCOwz9pLBBGCMxAryvM496p-aaBCscnKOMJxoVSR-AfByXxMLPyfZDSrc4QKr8paXpq4-qV9o8ymnnmDycg0XHKE7Yq6AtaUQte---Ft1hB-4zfBRseV43JERhiD9axs2kAwPCq_Squ21GJLWfs2fwNhveuWPad0uIIwQzG8YKkM4PIXf7yFXWKaOvqeLhpQqWimzrBC0eTBlEILIIQoZOhXpASZShyqACMgxHOK_OasKiSG51mk_dQLFMejzUJ1HbhGSkRc1qswl6OepZxczCTAUWSnK8V-RdUsz3UhxyCAkBU-YwsWdxBBxZk0YfHF2CQnl6ST_XfJbJbExEqVS8VfXzLHnxTIqwc5ateS-RzEdfSjnxMBQYwgWDCrDxWFX9sDc0xsu9tOC8qBT9Fa6RWKkvUBQvxafhgsAll4U7eQyMtTMRjPqGkb-pWlEoYu1Jy-NmjA_KM42LAl85mLfBChNBgFiPw08HEDPRexJkdKodi2FLu1dfQw1go-9nmS6MR3OlNgr_UMspDDLejHbAmwKratI3LMtWsBMVtq96fKyrIvktamlMyelRamuxIXqoFGrTutXtg0myiKqgzO7lcZ3ku3lLEz0Fp602en3DrD8NioMkekElUowwE4NoREHXEfjrOW_LpYH-FFqGtWVtV1ryC0GMNOBBjOdxlmZRm_1uwCSMq1yoyXfiOSfzURaoWglkspg9BckrHM3smcE0UT7EmMEjneVFO6LyfvfO_XLOBulnozMhlegdWlSwTE4bMhLIA",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "max.ru",
+          "publicKey": "wLB0Aqpcf71_RTk7HpqkyvnnasU18rgzyHqcTxoo7nA",
+          "shortId": "146655b57cc78a17",
+          "fingerprint": "firefox"
+        }
+      }
+    },
+    {
+      "tag": "proxy-3",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "176.109.85.131",
+            "port": 8002,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "mlkem768x25519plus.native.0rtt.A3UZy5M7a_iTWxyac5U_ohehjeJTJLAsrCRtqwBpQwa41ptIpNVcKjVrWCy6JZiISCvP1gg0Etlr0jSg2Ne3s2pcXZZQhJS7FCQTbesPgTo1DPmhd4cWsvw5oHw8gIl6sPLHDbFW-ZZvbkODBGmbuHNsjwM9_HSgDASX-CljPYPKQyVXXiGctDQexpl6ytKdoLV3bNld8ykrb3E8kelP3ZiAbtsOQ6uF_CQ8fAJh-HifOUVMiJua6oCR7eKNoTxnyNEmNeIxnXpolVOkH0yQxXgnvOG56ikPrDN0S_E9DmQgR9qlIiya5shY1uUzSDGaxMgQOZvDcUBcidgqn4eg7ZHNbgcxmKm_rEVtQzgJ6ASxttYyrLGeciayU1Vmj3yw5YIhsducEXA47gbCqMx9cSQyNYAsQBZe-gR2lUNMsmctVNGHN6a_7VQLdCI67HCpBxkE7tRiskBUpELOr4EPd_uJ_nguWcuMfBeAeZjAj2V9BdRSyupDK_gRVPKD6LgKZfUxXmN_H-wRbcygWYubyXqV7xqrtrFNInW1fSFK3iJ78Yu1lDHFxDVWBzy2XgtoHkVZxXe048k5tgGsc6qD32IUhgGtfGCjwjXAz0Ckd3scgHYWIEZ6NaFdmBckONgEwVxNDTPCZFCm0rG-9LcXFinJamglf4Ifh8e6J6BP4NOdSJN98NUSwiarazBMmZHChvCpP9ekhgll5Hx-Z2wO60oAuqkKu6R6m2k6KWKnetopYuFeYUcX5NpBCeA1GxJdq6WlyrKNW9IPdgC2KrlvpEJShuwzCGN8GcyUeCOwz9pLBBGCMxAryvM496p-aaBCscnKOMJxoVSR-AfByXxMLPyfZDSrc4QKr8paXpq4-qV9o8ymnnmDycg0XHKE7Yq6AtaUQte---Ft1hB-4zfBRseV43JERhiD9axs2kAwPCq_Squ21GJLWfs2fwNhveuWPad0uIIwQzG8YKkM4PIXf7yFXWKaOvqeLhpQqWimzrBC0eTBlEILIIQoZOhXpASZShyqACMgxHOK_OasKiSG51mk_dQLFMejzUJ1HbhGSkRc1qswl6OepZxczCTAUWSnK8V-RdUsz3UhxyCAkBU-YwsWdxBBxZk0YfHF2CQnl6ST_XfJbJbExEqVS8VfXzLHnxTIqwc5ateS-RzEdfSjnxMBQYwgWDCrDxWFX9sDc0xsu9tOC8qBT9Fa6RWKkvUBQvxafhgsAll4U7eQyMtTMRjPqGkb-pWlEoYu1Jy-NmjA_KM42LAl85mLfBChNBgFiPw08HEDPRexJkdKodi2FLu1dfQw1go-9nmS6MR3OlNgr_UMspDDLejHbAmwKratI3LMtWsBMVtq96fKyrIvktamlMyelRamuxIXqoFGrTutXtg0myiKqgzO7lcZ3ku3lLEz0Fp602en3DrD8NioMkekElUowwE4NoREHXEfjrOW_LpYH-FFqGtWVtV1ryC0GMNOBBjOdxlmZRm_1uwCSMq1yoyXfiOSfzURaoWglkspg9BckrHM3smcE0UT7EmMEjneVFO6LyfvfO_XLOBulnozMhlegdWlSwTE4bMhLIA",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "max.ru",
+          "publicKey": "wLB0Aqpcf71_RTk7HpqkyvnnasU18rgzyHqcTxoo7nA",
+          "shortId": "146655b57cc78a17",
+          "fingerprint": "firefox"
+        }
+      }
+    },
+    {
+      "tag": "proxy-4",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "62.152.59.145",
+            "port": 8002,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "mlkem768x25519plus.native.0rtt.A3UZy5M7a_iTWxyac5U_ohehjeJTJLAsrCRtqwBpQwa41ptIpNVcKjVrWCy6JZiISCvP1gg0Etlr0jSg2Ne3s2pcXZZQhJS7FCQTbesPgTo1DPmhd4cWsvw5oHw8gIl6sPLHDbFW-ZZvbkODBGmbuHNsjwM9_HSgDASX-CljPYPKQyVXXiGctDQexpl6ytKdoLV3bNld8ykrb3E8kelP3ZiAbtsOQ6uF_CQ8fAJh-HifOUVMiJua6oCR7eKNoTxnyNEmNeIxnXpolVOkH0yQxXgnvOG56ikPrDN0S_E9DmQgR9qlIiya5shY1uUzSDGaxMgQOZvDcUBcidgqn4eg7ZHNbgcxmKm_rEVtQzgJ6ASxttYyrLGeciayU1Vmj3yw5YIhsducEXA47gbCqMx9cSQyNYAsQBZe-gR2lUNMsmctVNGHN6a_7VQLdCI67HCpBxkE7tRiskBUpELOr4EPd_uJ_nguWcuMfBeAeZjAj2V9BdRSyupDK_gRVPKD6LgKZfUxXmN_H-wRbcygWYubyXqV7xqrtrFNInW1fSFK3iJ78Yu1lDHFxDVWBzy2XgtoHkVZxXe048k5tgGsc6qD32IUhgGtfGCjwjXAz0Ckd3scgHYWIEZ6NaFdmBckONgEwVxNDTPCZFCm0rG-9LcXFinJamglf4Ifh8e6J6BP4NOdSJN98NUSwiarazBMmZHChvCpP9ekhgll5Hx-Z2wO60oAuqkKu6R6m2k6KWKnetopYuFeYUcX5NpBCeA1GxJdq6WlyrKNW9IPdgC2KrlvpEJShuwzCGN8GcyUeCOwz9pLBBGCMxAryvM496p-aaBCscnKOMJxoVSR-AfByXxMLPyfZDSrc4QKr8paXpq4-qV9o8ymnnmDycg0XHKE7Yq6AtaUQte---Ft1hB-4zfBRseV43JERhiD9axs2kAwPCq_Squ21GJLWfs2fwNhveuWPad0uIIwQzG8YKkM4PIXf7yFXWKaOvqeLhpQqWimzrBC0eTBlEILIIQoZOhXpASZShyqACMgxHOK_OasKiSG51mk_dQLFMejzUJ1HbhGSkRc1qswl6OepZxczCTAUWSnK8V-RdUsz3UhxyCAkBU-YwsWdxBBxZk0YfHF2CQnl6ST_XfJbJbExEqVS8VfXzLHnxTIqwc5ateS-RzEdfSjnxMBQYwgWDCrDxWFX9sDc0xsu9tOC8qBT9Fa6RWKkvUBQvxafhgsAll4U7eQyMtTMRjPqGkb-pWlEoYu1Jy-NmjA_KM42LAl85mLfBChNBgFiPw08HEDPRexJkdKodi2FLu1dfQw1go-9nmS6MR3OlNgr_UMspDDLejHbAmwKratI3LMtWsBMVtq96fKyrIvktamlMyelRamuxIXqoFGrTutXtg0myiKqgzO7lcZ3ku3lLEz0Fp602en3DrD8NioMkekElUowwE4NoREHXEfjrOW_LpYH-FFqGtWVtV1ryC0GMNOBBjOdxlmZRm_1uwCSMq1yoyXfiOSfzURaoWglkspg9BckrHM3smcE0UT7EmMEjneVFO6LyfvfO_XLOBulnozMhlegdWlSwTE4bMhLIA",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "max.ru",
+          "publicKey": "wLB0Aqpcf71_RTk7HpqkyvnnasU18rgzyHqcTxoo7nA",
+          "shortId": "146655b57cc78a17",
+          "fingerprint": "firefox"
+        }
+      }
+    },
+    {
+      "tag": "proxy-5",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "188.225.62.84",
+            "port": 8002,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "mlkem768x25519plus.native.0rtt.A3UZy5M7a_iTWxyac5U_ohehjeJTJLAsrCRtqwBpQwa41ptIpNVcKjVrWCy6JZiISCvP1gg0Etlr0jSg2Ne3s2pcXZZQhJS7FCQTbesPgTo1DPmhd4cWsvw5oHw8gIl6sPLHDbFW-ZZvbkODBGmbuHNsjwM9_HSgDASX-CljPYPKQyVXXiGctDQexpl6ytKdoLV3bNld8ykrb3E8kelP3ZiAbtsOQ6uF_CQ8fAJh-HifOUVMiJua6oCR7eKNoTxnyNEmNeIxnXpolVOkH0yQxXgnvOG56ikPrDN0S_E9DmQgR9qlIiya5shY1uUzSDGaxMgQOZvDcUBcidgqn4eg7ZHNbgcxmKm_rEVtQzgJ6ASxttYyrLGeciayU1Vmj3yw5YIhsducEXA47gbCqMx9cSQyNYAsQBZe-gR2lUNMsmctVNGHN6a_7VQLdCI67HCpBxkE7tRiskBUpELOr4EPd_uJ_nguWcuMfBeAeZjAj2V9BdRSyupDK_gRVPKD6LgKZfUxXmN_H-wRbcygWYubyXqV7xqrtrFNInW1fSFK3iJ78Yu1lDHFxDVWBzy2XgtoHkVZxXe048k5tgGsc6qD32IUhgGtfGCjwjXAz0Ckd3scgHYWIEZ6NaFdmBckONgEwVxNDTPCZFCm0rG-9LcXFinJamglf4Ifh8e6J6BP4NOdSJN98NUSwiarazBMmZHChvCpP9ekhgll5Hx-Z2wO60oAuqkKu6R6m2k6KWKnetopYuFeYUcX5NpBCeA1GxJdq6WlyrKNW9IPdgC2KrlvpEJShuwzCGN8GcyUeCOwz9pLBBGCMxAryvM496p-aaBCscnKOMJxoVSR-AfByXxMLPyfZDSrc4QKr8paXpq4-qV9o8ymnnmDycg0XHKE7Yq6AtaUQte---Ft1hB-4zfBRseV43JERhiD9axs2kAwPCq_Squ21GJLWfs2fwNhveuWPad0uIIwQzG8YKkM4PIXf7yFXWKaOvqeLhpQqWimzrBC0eTBlEILIIQoZOhXpASZShyqACMgxHOK_OasKiSG51mk_dQLFMejzUJ1HbhGSkRc1qswl6OepZxczCTAUWSnK8V-RdUsz3UhxyCAkBU-YwsWdxBBxZk0YfHF2CQnl6ST_XfJbJbExEqVS8VfXzLHnxTIqwc5ateS-RzEdfSjnxMBQYwgWDCrDxWFX9sDc0xsu9tOC8qBT9Fa6RWKkvUBQvxafhgsAll4U7eQyMtTMRjPqGkb-pWlEoYu1Jy-NmjA_KM42LAl85mLfBChNBgFiPw08HEDPRexJkdKodi2FLu1dfQw1go-9nmS6MR3OlNgr_UMspDDLejHbAmwKratI3LMtWsBMVtq96fKyrIvktamlMyelRamuxIXqoFGrTutXtg0myiKqgzO7lcZ3ku3lLEz0Fp602en3DrD8NioMkekElUowwE4NoREHXEfjrOW_LpYH-FFqGtWVtV1ryC0GMNOBBjOdxlmZRm_1uwCSMq1yoyXfiOSfzURaoWglkspg9BckrHM3smcE0UT7EmMEjneVFO6LyfvfO_XLOBulnozMhlegdWlSwTE4bMhLIA",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "max.ru",
+          "publicKey": "wLB0Aqpcf71_RTk7HpqkyvnnasU18rgzyHqcTxoo7nA",
+          "shortId": "146655b57cc78a17",
+          "fingerprint": "firefox"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "burstObservatory": {
+    "pingConfig": {
+      "timeout": "5s",
+      "interval": "30s",
+      "sampling": 3,
+      "httpMethod": "HEAD",
+      "destination": "https://www.gstatic.com/generate_204",
+      "connectivity": "http://connectivitycheck.gstatic.com/generate_204"
+    },
+    "subjectSelector": [
+      "proxy"
+    ]
+  },
+  "remarks": "🇧🇾 LTE | Беларусь | µTorrent",
+  "meta": {
+    "serverDescription": "Lite"
+  }
+}
