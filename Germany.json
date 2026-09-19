@@ -1,0 +1,251 @@
+{
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "queryStrategy": "UseIPv4"
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "domain": [
+          "keyword:max.ru",
+          "keyword:oneme"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "domain:rtk.harknmav.fun",
+          "domain:sub.harknmav.fun",
+          "domain:ephir.live",
+          "geosite:category-ru"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "balancerTag": "Super_Balancer"
+      }
+    ],
+    "balancers": [
+      {
+        "tag": "Super_Balancer",
+        "selector": [
+          "proxy"
+        ],
+        "strategy": {
+          "type": "leastLoad",
+          "settings": {
+            "maxRTT": "2500ms",
+            "expected": 2,
+            "tolerance": 0.11
+          }
+        }
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "AsIs"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "tls"
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "tls"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "178.214.106.15",
+            "port": 443,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "stream-one",
+          "host": "",
+          "path": "/api/v2/upload/8a3f1c5be24d2854",
+          "extra": {
+            "xmux": {
+              "maxConnections": "2",
+              "hKeepAlivePeriod": 10,
+              "hMaxRequestTimes": "1200-1800",
+              "hMaxReusableSecs": "3600-6000"
+            },
+            "noGRPCHeader": false
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "grw.harknmav.fun",
+          "enableSessionResumption": false,
+          "fingerprint": "firefox",
+          "alpn": [
+            "h2"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "proxy-2",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "178.214.106.18",
+            "port": 443,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "stream-one",
+          "host": "",
+          "path": "/api/v2/upload/8a3f1c5be24d2854",
+          "extra": {
+            "xmux": {
+              "maxConnections": "2",
+              "hKeepAlivePeriod": 10,
+              "hMaxRequestTimes": "1200-1800",
+              "hMaxReusableSecs": "3600-6000"
+            },
+            "noGRPCHeader": false
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "grw.harknmav.fun",
+          "enableSessionResumption": false,
+          "fingerprint": "firefox",
+          "alpn": [
+            "h2"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "proxy-3",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "178.214.106.14",
+            "port": 443,
+            "users": [
+              {
+                "id": "c0288cb4-42cd-4a33-b040-9bcf91b2e68a",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "stream-one",
+          "host": "",
+          "path": "/api/v2/upload/8a3f1c5be24d2854",
+          "extra": {
+            "xmux": {
+              "maxConnections": "2",
+              "hKeepAlivePeriod": 10,
+              "hMaxRequestTimes": "1200-1800",
+              "hMaxReusableSecs": "3600-6000"
+            },
+            "noGRPCHeader": false
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "grw.harknmav.fun",
+          "enableSessionResumption": false,
+          "fingerprint": "firefox",
+          "alpn": [
+            "h2"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "burstObservatory": {
+    "pingConfig": {
+      "timeout": "5s",
+      "interval": "60s",
+      "sampling": 2,
+      "httpMethod": "HEAD",
+      "destination": "https://www.gstatic.com/generate_204",
+      "connectivity": "http://connectivitycheck.gstatic.com/generate_204"
+    },
+    "subjectSelector": [
+      "proxy"
+    ]
+  },
+  "remarks": "🇩🇪 VPN | Германия",
+  "meta": {
+    "serverDescription": "VPN"
+  }
+}
